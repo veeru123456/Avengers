@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>OPERATION: DOOMSDAY — Full Case File</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:wght@400;700&display=swap');
+
+  :root{
+    --paper: #EDE6D3;
+    --paper-dark: #E2D9C0;
+    --ink: #1D1B16;
+    --ink-fade: #55503f;
+    --stamp-red: #A9291E;
+    --stamp-blue: #33507A;
+    --tab-tan: #C9A66B;
+    --line: #b8ac8a;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; padding:32px 16px 80px;
+    background: radial-gradient(ellipse at top left, rgba(0,0,0,0.05), transparent 60%), var(--paper);
+    font-family:'Courier Prime', monospace;
+    color:var(--ink);
+    display:flex; justify-content:center;
+  }
+  .dossier{
+    width:100%; max-width:780px; background:var(--paper); position:relative;
+    border:1px solid var(--line);
+    box-shadow: 0 2px 0 var(--line), 0 4px 18px rgba(0,0,0,0.25);
+  }
+  .clip{
+    position:absolute; top:-14px; left:36px; width:34px; height:60px;
+    border:5px solid #8a8578; border-radius:6px; transform:rotate(-4deg);
+    box-shadow: inset 0 0 0 3px var(--paper); z-index:5;
+  }
+  .header{ padding:36px 40px 18px; border-bottom:2px solid var(--ink); position:relative; }
+  .case-no{ font-size:11px; letter-spacing:2px; color:var(--ink-fade); text-transform:uppercase; }
+  h1{ font-family:'Special Elite', monospace; font-size:30px; margin:6px 0 4px; letter-spacing:1px; text-transform:uppercase; }
+  .subhead{ font-size:13px; color:var(--ink-fade); margin-bottom:12px; }
+  .stamp{
+    position:absolute; top:28px; right:36px; border:3px solid var(--stamp-red); color:var(--stamp-red);
+    font-family:'Special Elite', monospace; text-transform:uppercase; padding:6px 12px;
+    transform:rotate(8deg); font-size:14px; letter-spacing:2px; opacity:0.85;
+  }
+  .meta-row{ display:flex; gap:22px; font-size:12px; color:var(--ink-fade); flex-wrap:wrap; }
+  .meta-row b{ color:var(--ink); }
+
+  .progress-wrap{ padding:14px 40px; border-bottom:1px dashed var(--line); background:var(--paper-dark); }
+  .progress-label{ display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px; text-transform:uppercase; letter-spacing:1px; }
+  .progress-track{ height:10px; background:#d9cfae; border:1px solid var(--ink); }
+  .progress-fill{ height:100%; background:var(--stamp-blue); width:0%; transition:width .3s ease; }
+  .progress-count{ margin-top:6px; font-size:12px; color:var(--ink-fade); }
+
+  .section{ padding:18px 40px 4px; }
+  .section-title{
+    display:flex; align-items:baseline; gap:10px; font-family:'Special Elite', monospace;
+    font-size:15px; text-transform:uppercase; letter-spacing:1px; border-bottom:1px solid var(--ink);
+    padding-bottom:6px; margin-bottom:8px;
+  }
+  .section-title .tag{
+    font-family:'Courier Prime', monospace; font-size:10px; background:var(--tab-tan); color:var(--ink);
+    padding:2px 8px; border-radius:2px; letter-spacing:1px;
+  }
+  .section-note{ font-size:11.5px; color:var(--ink-fade); margin:-2px 0 10px; }
+
+  .item{ display:flex; align-items:flex-start; gap:10px; padding:6px 0; border-bottom:1px dotted var(--line); }
+  .item:last-child{ border-bottom:none; }
+  .item input[type=checkbox]{
+    appearance:none; width:16px; height:16px; border:2px solid var(--ink); margin-top:2px;
+    flex:none; cursor:pointer; position:relative; background:var(--paper);
+  }
+  .item input[type=checkbox]:checked{ background:var(--stamp-blue); border-color:var(--stamp-blue); }
+  .item input[type=checkbox]:checked::after{
+    content:"✓"; position:absolute; top:-4px; left:1px; color:var(--paper); font-size:12px; font-weight:bold;
+  }
+  .item-body{ flex:1; }
+  .item-title{ font-weight:700; font-size:13.5px; }
+  .item.done .item-title{ text-decoration:line-through; color:var(--ink-fade); }
+  .item-year{ font-size:11px; color:var(--ink-fade); }
+  .doom-tag{
+    font-size:9px; text-transform:uppercase; letter-spacing:0.5px; padding:1px 6px;
+    border:1px solid var(--stamp-red); color:var(--stamp-red); white-space:nowrap; margin-left:6px;
+  }
+
+  .footer{
+    padding:22px 40px 30px; font-size:11px; color:var(--ink-fade);
+    border-top:2px solid var(--ink); margin-top:12px; line-height:1.6;
+  }
+
+  @media (max-width:520px){
+    .header, .section, .footer, .progress-wrap{ padding-left:20px; padding-right:20px; }
+    h1{ font-size:22px; }
+    .stamp{ position:static; display:inline-block; margin-top:8px; transform:rotate(-2deg); }
+  }
+</style>
+</head>
+<body>
+<div class="dossier">
+  <div class="clip"></div>
+
+  <div class="header">
+    <div class="case-no">FILE NO. 616-DOOM-FULL &nbsp;·&nbsp; COMPLETE CASE FILE &nbsp;·&nbsp; SPOILER-FREE</div>
+    <h1>Full Watch Order</h1>
+    <div class="subhead">Release order, Phase 1 through Avengers: Doomsday (Dec 18, 2026)</div>
+    <div class="stamp">Complete</div>
+    <div class="meta-row">
+      <div><b id="totalCount">--</b> titles logged</div>
+      <div>Doom-tagged = <b>confirmed connection</b></div>
+    </div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-label"><span>Debrief Progress</span><span id="progressPct">0%</span></div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-count" id="progressCount">0 of 0 watched</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Phase One <span class="tag">2008–2012</span></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Iron Man</span> <span class="item-year">(2008)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">The Incredible Hulk</span> <span class="item-year">(2008)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Iron Man 2</span> <span class="item-year">(2010)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Thor</span> <span class="item-year">(2011)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Captain America: The First Avenger</span> <span class="item-year">(2011)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">The Avengers</span> <span class="item-year">(2012)</span></div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Phase Two <span class="tag">2013–2015</span></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Iron Man 3</span> <span class="item-year">(2013)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Thor: The Dark World</span> <span class="item-year">(2013)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Captain America: The Winter Soldier</span> <span class="item-year">(2014)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Guardians of the Galaxy</span> <span class="item-year">(2014)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Avengers: Age of Ultron</span> <span class="item-year">(2015)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Ant-Man</span> <span class="item-year">(2015)</span></div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Phase Three <span class="tag">2016–2019</span></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Captain America: Civil War</span> <span class="item-year">(2016)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Doctor Strange</span> <span class="item-year">(2016)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Guardians of the Galaxy Vol. 2</span> <span class="item-year">(2017)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Spider-Man: Homecoming</span> <span class="item-year">(2017)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Thor: Ragnarok</span> <span class="item-year">(2017)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Black Panther</span> <span class="item-year">(2018)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Avengers: Infinity War</span> <span class="item-year">(2018)</span> <span class="doom-tag">Core</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Ant-Man and the Wasp</span> <span class="item-year">(2018)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Captain Marvel</span> <span class="item-year">(2019)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Avengers: Endgame</span> <span class="item-year">(2019)</span> <span class="doom-tag">Core</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Spider-Man: Far From Home</span> <span class="item-year">(2019)</span></div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Phase Four <span class="tag">2021–2022</span></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">WandaVision</span> <span class="item-year">(2021)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">The Falcon and the Winter Soldier</span> <span class="item-year">(2021)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Loki — Season 1</span> <span class="item-year">(2021)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Black Widow</span> <span class="item-year">(2021)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">What If...? — Season 1</span> <span class="item-year">(2021)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Shang-Chi and the Legend of the Ten Rings</span> <span class="item-year">(2021)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Eternals</span> <span class="item-year">(2021)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Hawkeye</span> <span class="item-year">(2021)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Spider-Man: No Way Home</span> <span class="item-year">(2021)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Moon Knight</span> <span class="item-year">(2022)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Doctor Strange in the Multiverse of Madness</span> <span class="item-year">(2022)</span> <span class="doom-tag">Must</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Ms. Marvel</span> <span class="item-year">(2022)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Thor: Love and Thunder</span> <span class="item-year">(2022)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">She-Hulk: Attorney at Law</span> <span class="item-year">(2022)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Black Panther: Wakanda Forever</span> <span class="item-year">(2022)</span></div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Phase Five <span class="tag">2023–2025</span></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Ant-Man and the Wasp: Quantumania</span> <span class="item-year">(2023)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Guardians of the Galaxy Vol. 3</span> <span class="item-year">(2023)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Secret Invasion</span> <span class="item-year">(2023)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Loki — Season 2</span> <span class="item-year">(2023)</span> <span class="doom-tag">Must</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">The Marvels</span> <span class="item-year">(2023)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Echo</span> <span class="item-year">(2024)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Agatha All Along</span> <span class="item-year">(2024)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Deadpool & Wolverine</span> <span class="item-year">(2024)</span> <span class="doom-tag">Must</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Captain America: Brave New World</span> <span class="item-year">(2025)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Thunderbolts*</span> <span class="item-year">(2025)</span> <span class="doom-tag">Must</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Ironheart</span> <span class="item-year">(2025)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">The Fantastic Four: First Steps</span> <span class="item-year">(2025)</span> <span class="doom-tag">Must</span></div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Phase Six <span class="tag">2026 — the final stretch</span></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Wonder Man</span> <span class="item-year">(2026)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Daredevil: Born Again — Season 2</span> <span class="item-year">(2026)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Spider-Man: Brand New Day</span> <span class="item-year">(2026)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">VisionQuest</span> <span class="item-year">(2026)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Avengers: Doomsday</span> <span class="item-year">(Dec 18, 2026)</span> <span class="doom-tag">The Main Event</span></div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Side Track A — Fox X-Men Saga <span class="tag">optional, for context</span></div>
+    <div class="section-note">Not part of the MCU proper, but the original cast is returning in Doomsday — this is their history.</div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">X-Men</span> <span class="item-year">(2000)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">X2: X-Men United</span> <span class="item-year">(2003)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">X-Men: The Last Stand</span> <span class="item-year">(2006)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">X-Men Origins: Wolverine</span> <span class="item-year">(2009)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">X-Men: First Class</span> <span class="item-year">(2011)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">The Wolverine</span> <span class="item-year">(2013)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">X-Men: Days of Future Past</span> <span class="item-year">(2014)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Deadpool</span> <span class="item-year">(2016)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">X-Men: Apocalypse</span> <span class="item-year">(2016)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Logan</span> <span class="item-year">(2017)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Deadpool 2</span> <span class="item-year">(2018)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Dark Phoenix</span> <span class="item-year">(2019)</span></div></div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">The New Mutants</span> <span class="item-year">(2020)</span></div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Side Track B — Netflix Daredevil <span class="tag">optional, for context</span></div>
+    <div class="section-note">Matt Murdock is confirmed for Doomsday. This is the original run before Born Again.</div>
+    <div class="item"><input type="checkbox"><div class="item-body"><span class="item-title">Daredevil — Seasons 1–3</span> <span class="item-year">(2015–2018)</span></div></div>
+  </div>
+
+  <div class="footer">
+    Field note: release order is the recommended path for a first watch — it preserves the reveals as the studio intended them. Save the Fox X-Men and Netflix Daredevil side tracks for whenever you want extra context; they're not required viewing, just useful background on characters making their MCU debut. Runtimes vary widely by title (TV seasons run 5–8 hours each); pace yourself accordingly.
+  </div>
+</div>
+
+<script>
+  const checkboxes = document.querySelectorAll('.item input[type=checkbox]');
+  const fill = document.getElementById('progressFill');
+  const pctLabel = document.getElementById('progressPct');
+  const progressCount = document.getElementById('progressCount');
+  const totalCount = document.getElementById('totalCount');
+  totalCount.textContent = checkboxes.length;
+
+  function update(){
+    let checked = 0;
+    checkboxes.forEach(cb => {
+      const item = cb.closest('.item');
+      if(cb.checked){ checked++; item.classList.add('done'); }
+      else { item.classList.remove('done'); }
+    });
+    const pct = Math.round((checked/checkboxes.length)*100);
+    fill.style.width = pct + '%';
+    pctLabel.textContent = pct + '%';
+    progressCount.textContent = checked + ' of ' + checkboxes.length + ' watched';
+  }
+  checkboxes.forEach(cb => cb.addEventListener('change', update));
+  update();
+</script>
+</body>
+</html>

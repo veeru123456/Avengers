@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>OPERATION: DOOMSDAY — Command Index</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap');
+
+  :root{
+    --bg:#0A0D12;
+    --panel:#11151D;
+    --panel-2:#161B25;
+    --line:#232B39;
+    --text:#E7E6DD;
+    --text-dim:#77839A;
+    --gold:#D9A441;
+    --red:#C4453B;
+    --cyan:#4FA8B8;
+    --purple:#7C8AD9;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{
+    background:var(--bg); color:var(--text);
+    font-family:'Rajdhani', sans-serif;
+    min-height:100vh;
+  }
+  body{
+    background-image:
+      linear-gradient(rgba(217,164,65,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(217,164,65,0.035) 1px, transparent 1px);
+    background-size: 34px 34px;
+    overflow-x:hidden;
+  }
+
+  .sweep{
+    position:fixed; top:0; left:0; width:100%; height:6px;
+    background:linear-gradient(90deg, transparent, var(--gold), transparent);
+    box-shadow:0 0 24px 4px rgba(217,164,65,0.6);
+    z-index:50; animation: sweepDown 1.6s ease-out forwards;
+  }
+  @keyframes sweepDown{ 0%{top:0;opacity:1;} 90%{opacity:1;} 100%{top:100%;opacity:0;} }
+
+  .scanline{
+    position:fixed; inset:0; pointer-events:none; z-index:1;
+    background:repeating-linear-gradient(0deg, rgba(255,255,255,0.012) 0px, transparent 1px, transparent 3px);
+  }
+
+  header{
+    max-width:1180px; margin:0 auto; padding:60px 32px 34px;
+    border-bottom:1px solid var(--line); position:relative; z-index:2;
+  }
+  .eyebrow{
+    font-family:'Orbitron', sans-serif; font-size:11px; letter-spacing:4px;
+    color:var(--red); text-transform:uppercase; display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{
+    content:''; width:8px; height:8px; background:var(--red); border-radius:50%;
+    box-shadow:0 0 8px 2px var(--red); animation: blink 1.4s infinite;
+  }
+  @keyframes blink{ 0%,100%{opacity:1;} 50%{opacity:0.25;} }
+
+  h1{
+    font-family:'Orbitron', sans-serif; font-weight:900;
+    font-size:clamp(34px, 6.5vw, 64px);
+    letter-spacing:1px; margin:14px 0 10px;
+  }
+  h1 span{ color:var(--gold); }
+
+  .subhead{ font-size:16px; color:var(--text-dim); max-width:640px; line-height:1.55; }
+
+  .countdown{ display:flex; gap:14px; margin-top:32px; flex-wrap:wrap; }
+  .cd-unit{
+    background:var(--panel); border:1px solid var(--line); padding:14px 18px; min-width:84px; text-align:center;
+    position:relative; overflow:hidden;
+  }
+  .cd-unit::after{
+    content:''; position:absolute; left:0; bottom:0; height:2px; width:100%;
+    background:var(--gold); box-shadow:0 0 8px 1px var(--gold);
+  }
+  .cd-num{
+    font-family:'Orbitron', sans-serif; font-size:30px; font-weight:700; color:var(--gold);
+    font-variant-numeric:tabular-nums;
+  }
+  .cd-label{ font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--text-dim); margin-top:4px; }
+
+  .grid{
+    max-width:1180px; margin:44px auto 0; padding:0 32px;
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:16px;
+    position:relative; z-index:2;
+  }
+
+  .file-card{
+    display:block; text-decoration:none; color:var(--text);
+    background:var(--panel); border:1px solid var(--line); padding:24px;
+    position:relative; overflow:hidden; opacity:0; transform:translateY(20px);
+    animation: riseIn .5s ease forwards;
+    transition: border-color .18s ease, transform .18s ease;
+  }
+  .file-card:hover{ border-color:var(--card-color, var(--gold)); transform:translateY(-4px); }
+  .file-card::before{
+    content:''; position:absolute; top:0; left:0; width:3px; height:100%;
+    background:var(--card-color, var(--gold));
+  }
+  @keyframes riseIn{ to{ opacity:1; transform:translateY(0); } }
+
+  .file-num{
+    font-family:'Orbitron', sans-serif; font-size:11px; letter-spacing:2px;
+    color:var(--card-color, var(--gold)); margin-bottom:14px;
+  }
+  .file-icon{ width:40px; height:40px; margin-bottom:16px; color:var(--card-color, var(--gold)); }
+  .file-icon svg{ width:100%; height:100%; }
+
+  .file-title{
+    font-family:'Orbitron', sans-serif; font-size:16px; font-weight:700; letter-spacing:0.5px;
+    text-transform:uppercase; margin-bottom:8px;
+  }
+  .file-desc{ font-size:13px; color:var(--text-dim); line-height:1.5; }
+
+  .file-arrow{
+    margin-top:18px; font-family:'Orbitron', sans-serif; font-size:11px; letter-spacing:1.5px;
+    color:var(--card-color, var(--gold)); display:flex; align-items:center; gap:6px;
+  }
+  .file-card:hover .file-arrow{ gap:10px; }
+  .file-arrow span{ transition:transform .18s ease; }
+
+  footer{
+    max-width:1180px; margin:60px auto 0; padding:24px 32px 60px;
+    border-top:1px solid var(--line); font-size:12px; color:var(--text-dim); line-height:1.6;
+    position:relative; z-index:2;
+  }
+  footer b{ color:var(--gold); }
+
+  @media (prefers-reduced-motion: reduce){
+    .sweep{ display:none; }
+    .file-card{ opacity:1; transform:none; animation:none; }
+    .eyebrow::before{ animation:none; }
+  }
+
+  @media (max-width:520px){
+    header{ padding:44px 20px 26px; }
+    .grid, footer{ padding-left:20px; padding-right:20px; }
+    .cd-unit{ min-width:70px; padding:10px 12px; }
+    .cd-num{ font-size:22px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sweep"></div>
+<div class="scanline"></div>
+
+<header>
+  <div class="eyebrow">Threat Level: Global · All Systems Nominal</div>
+  <h1>OPERATION <span>DOOMSDAY</span></h1>
+  <p class="subhead">Command index for the road to Avengers: Doomsday — Friday, December 18, 2026. Four files. Zero spoilers.</p>
+
+  <div class="countdown" id="countdown">
+    <div class="cd-unit"><div class="cd-num" id="cd-days">--</div><div class="cd-label">Days</div></div>
+    <div class="cd-unit"><div class="cd-num" id="cd-hours">--</div><div class="cd-label">Hours</div></div>
+    <div class="cd-unit"><div class="cd-num" id="cd-mins">--</div><div class="cd-label">Minutes</div></div>
+    <div class="cd-unit"><div class="cd-num" id="cd-secs">--</div><div class="cd-label">Seconds</div></div>
+  </div>
+</header>
+
+<div class="grid" id="grid"></div>
+
+<footer>
+  <b>Field note:</b> all icons, colors, and layout on this site are original — not official Marvel or Disney assets. Progress trackers on each page are stored locally in your browser and won't sync across devices.
+</footer>
+
+<script>
+  const target = new Date("2026-12-18T00:00:00");
+  function tick(){
+    const now = new Date();
+    let diff = Math.max(0, target - now);
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('cd-days').textContent = d;
+    document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+    document.getElementById('cd-mins').textContent = String(m).padStart(2,'0');
+    document.getElementById('cd-secs').textContent = String(s).padStart(2,'0');
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  const files = [
+    {
+      num:"01", color:"#D9A441", title:"The Speedrun", href:"doomsday-watch-order.html",
+      desc:"Curated tiered checklist for a quick catch-up if you're short on time.",
+      icon:`<svg viewBox="0 0 64 64"><path d="M12 20 L28 36 L52 12" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><rect x="10" y="10" width="44" height="44" fill="none" stroke="currentColor" stroke-width="2.5"/></svg>`
+    },
+    {
+      num:"02", color:"#4FA8B8", title:"Full Case File", href:"full-mcu-watch-order.html",
+      desc:"Every MCU title, Phase 1 through 6, plus X-Men and Daredevil side tracks.",
+      icon:`<svg viewBox="0 0 64 64"><rect x="10" y="8" width="34" height="48" fill="none" stroke="currentColor" stroke-width="2.5"/><line x1="18" y1="20" x2="38" y2="20" stroke="currentColor" stroke-width="2.5"/><line x1="18" y1="30" x2="38" y2="30" stroke="currentColor" stroke-width="2.5"/><line x1="18" y1="40" x2="30" y2="40" stroke="currentColor" stroke-width="2.5"/></svg>`
+    },
+    {
+      num:"03", color:"#C4453B", title:"Deployment Schedule", href:"doomsday-viewing-schedule.html",
+      desc:"Week-by-week viewing plan from today through opening night.",
+      icon:`<svg viewBox="0 0 64 64"><circle cx="32" cy="34" r="22" fill="none" stroke="currentColor" stroke-width="2.5"/><line x1="32" y1="34" x2="32" y2="20" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><line x1="32" y1="34" x2="42" y2="38" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><line x1="24" y1="8" x2="24" y2="16" stroke="currentColor" stroke-width="3"/><line x1="40" y1="8" x2="40" y2="16" stroke="currentColor" stroke-width="3"/></svg>`
+    },
+    {
+      num:"04", color:"#7C8AD9", title:"Roster Scan", href:"roster.html",
+      desc:"Interactive, animated board of every confirmed operative.",
+      icon:`<svg viewBox="0 0 64 64"><circle cx="32" cy="22" r="10" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M14 54 C14 40 22 34 32 34 C42 34 50 40 50 54" fill="none" stroke="currentColor" stroke-width="2.5"/></svg>`
+    },
+  ];
+
+  const grid = document.getElementById('grid');
+  grid.innerHTML = files.map((f, i) => `
+    <a class="file-card" href="${f.href}" style="--card-color:${f.color}; animation-delay:${i*0.08}s">
+      <div class="file-num">FILE ${f.num}</div>
+      <div class="file-icon">${f.icon}</div>
+      <div class="file-title">${f.title}</div>
+      <div class="file-desc">${f.desc}</div>
+      <div class="file-arrow">OPEN FILE <span>→</span></div>
+    </a>
+  `).join('');
+</script>
+</body>
+</html>
