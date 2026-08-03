@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>OPERATION: DOOMSDAY — Viewing Dossier</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=Courier+Prime:wght@400;700&display=swap');
+
+  :root{
+    --paper: #EDE6D3;
+    --paper-dark: #E2D9C0;
+    --ink: #1D1B16;
+    --ink-fade: #55503f;
+    --stamp-red: #A9291E;
+    --stamp-blue: #33507A;
+    --tab-tan: #C9A66B;
+    --line: #b8ac8a;
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;
+    padding:32px 16px 80px;
+    background:
+      radial-gradient(ellipse at top left, rgba(0,0,0,0.05), transparent 60%),
+      var(--paper);
+    font-family:'Courier Prime', monospace;
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+  }
+
+  .dossier{
+    width:100%;
+    max-width:760px;
+    background:var(--paper);
+    position:relative;
+    border:1px solid var(--line);
+    box-shadow: 0 2px 0 var(--line), 0 4px 18px rgba(0,0,0,0.25);
+  }
+
+  /* clip */
+  .clip{
+    position:absolute;
+    top:-14px;
+    left:36px;
+    width:34px;
+    height:60px;
+    border:5px solid #8a8578;
+    border-radius:6px;
+    transform:rotate(-4deg);
+    background:transparent;
+    box-shadow: inset 0 0 0 3px var(--paper);
+    z-index:5;
+  }
+
+  .header{
+    padding:38px 40px 20px;
+    border-bottom:2px solid var(--ink);
+    position:relative;
+  }
+
+  .case-no{
+    font-size:11px;
+    letter-spacing:2px;
+    color:var(--ink-fade);
+    text-transform:uppercase;
+  }
+
+  h1{
+    font-family:'Special Elite', monospace;
+    font-size:34px;
+    margin:6px 0 4px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+  }
+
+  .subhead{
+    font-size:13px;
+    color:var(--ink-fade);
+    margin-bottom:14px;
+  }
+
+  .stamp{
+    position:absolute;
+    top:30px;
+    right:36px;
+    border:3px solid var(--stamp-red);
+    color:var(--stamp-red);
+    font-family:'Special Elite', monospace;
+    text-transform:uppercase;
+    padding:6px 12px;
+    transform:rotate(8deg);
+    font-size:15px;
+    letter-spacing:2px;
+    opacity:0.85;
+  }
+
+  .meta-row{
+    display:flex;
+    gap:24px;
+    font-size:12px;
+    color:var(--ink-fade);
+    flex-wrap:wrap;
+  }
+  .meta-row b{color:var(--ink);}
+
+  .progress-wrap{
+    padding:16px 40px;
+    border-bottom:1px dashed var(--line);
+    background:var(--paper-dark);
+  }
+  .progress-label{
+    display:flex;
+    justify-content:space-between;
+    font-size:12px;
+    margin-bottom:6px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+  }
+  .progress-track{
+    height:10px;
+    background:#d9cfae;
+    border:1px solid var(--ink);
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--stamp-blue);
+    width:0%;
+    transition:width .3s ease;
+  }
+  .time-total{
+    margin-top:8px;
+    font-size:12px;
+    color:var(--ink-fade);
+  }
+
+  .section{
+    padding:22px 40px 6px;
+  }
+  .section-title{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    font-family:'Special Elite', monospace;
+    font-size:16px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    border-bottom:1px solid var(--ink);
+    padding-bottom:6px;
+    margin-bottom:10px;
+  }
+  .section-title .tag{
+    font-family:'Courier Prime', monospace;
+    font-size:10px;
+    background:var(--tab-tan);
+    color:var(--ink);
+    padding:2px 8px;
+    border-radius:2px;
+    letter-spacing:1px;
+  }
+  .section-note{
+    font-size:12px;
+    color:var(--ink-fade);
+    margin:-4px 0 12px;
+  }
+
+  .item{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    padding:9px 0;
+    border-bottom:1px dotted var(--line);
+  }
+  .item:last-child{border-bottom:none;}
+
+  .item input[type=checkbox]{
+    appearance:none;
+    width:18px;
+    height:18px;
+    border:2px solid var(--ink);
+    margin-top:2px;
+    flex:none;
+    cursor:pointer;
+    position:relative;
+    background:var(--paper);
+  }
+  .item input[type=checkbox]:checked{
+    background:var(--stamp-blue);
+    border-color:var(--stamp-blue);
+  }
+  .item input[type=checkbox]:checked::after{
+    content:"✓";
+    position:absolute;
+    top:-4px;
+    left:2px;
+    color:var(--paper);
+    font-size:13px;
+    font-weight:bold;
+  }
+
+  .item-body{flex:1;}
+  .item-title{
+    font-weight:700;
+    font-size:14.5px;
+  }
+  .item.done .item-title{
+    text-decoration:line-through;
+    color:var(--ink-fade);
+  }
+  .item-desc{
+    font-size:12px;
+    color:var(--ink-fade);
+    margin-top:2px;
+  }
+  .item-meta{
+    display:flex;
+    gap:8px;
+    align-items:center;
+    flex:none;
+    text-align:right;
+  }
+  .runtime{
+    font-size:12px;
+    color:var(--ink-fade);
+    white-space:nowrap;
+  }
+  .must{
+    font-size:9.5px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    padding:2px 6px;
+    border:1px solid var(--stamp-red);
+    color:var(--stamp-red);
+    white-space:nowrap;
+  }
+  .optional{
+    font-size:9.5px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    padding:2px 6px;
+    border:1px solid var(--ink-fade);
+    color:var(--ink-fade);
+    white-space:nowrap;
+  }
+
+  .footer{
+    padding:24px 40px 34px;
+    font-size:11px;
+    color:var(--ink-fade);
+    border-top:2px solid var(--ink);
+    margin-top:14px;
+    line-height:1.6;
+  }
+  .footer .redact{
+    display:inline-block;
+    background:var(--ink);
+    color:var(--ink);
+    padding:0 6px;
+    user-select:none;
+  }
+
+  @media (max-width:520px){
+    .header, .section, .footer, .progress-wrap{padding-left:20px;padding-right:20px;}
+    h1{font-size:26px;}
+    .stamp{position:static;display:inline-block;margin-top:10px;transform:rotate(-2deg);}
+    .item{flex-wrap:wrap;}
+    .item-meta{flex-basis:100%;justify-content:flex-start;margin-top:4px;}
+  }
+</style>
+</head>
+<body>
+<div class="dossier">
+  <div class="clip"></div>
+
+  <div class="header">
+    <div class="case-no">FILE NO. 616-DOOM &nbsp;·&nbsp; CLEARANCE: FAN-LEVEL &nbsp;·&nbsp; SPOILER-FREE</div>
+    <h1>Viewing Order Dossier</h1>
+    <div class="subhead">Prep protocol for <b>Avengers: Doomsday</b> — theatrical debrief December 18, 2026</div>
+    <div class="stamp">Priority</div>
+    <div class="meta-row">
+      <div><b>21</b> titles logged</div>
+      <div><b>~38 hrs</b> total runtime</div>
+      <div><b>6</b> must-watch, rest optional</div>
+    </div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-label"><span>Debrief Progress</span><span id="progressPct">0%</span></div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="time-total" id="timeTotal">0h 0m watched of ~38h 04m</div>
+  </div>
+
+  <!-- SPEEDRUN -->
+  <div class="section">
+    <div class="section-title">Tier 0 — The Speedrun <span class="tag">if you only have a weekend</span></div>
+    <div class="section-note">The non-negotiable trio. Covers the emotional stakes, the multiverse rules, and the new team.</div>
+
+    <div class="item" data-min="182">
+      <input type="checkbox">
+      <div class="item-body">
+        <div class="item-title">Avengers: Endgame</div>
+        <div class="item-desc">The Infinity Saga payoff. You need this foundation, full stop.</div>
+      </div>
+      <div class="item-meta"><span class="must">Must</span><span class="runtime">3h 02m</span></div>
+    </div>
+
+    <div class="item" data-min="300">
+      <input type="checkbox">
+      <div class="item-body">
+        <div class="item-title">Loki — Season 2</div>
+        <div class="item-desc">Sets the current multiverse rules everything else now plays by.</div>
+      </div>
+      <div class="item-meta"><span class="must">Must</span><span class="runtime">~5h</span></div>
+    </div>
+
+    <div class="item" data-min="126">
+      <input type="checkbox">
+      <div class="item-body">
+        <div class="item-title">Thunderbolts*</div>
+        <div class="item-desc">The New Avengers roster is the backbone of the Doomsday lineup — don't skip the post-credits scene.</div>
+      </div>
+      <div class="item-meta"><span class="must">Must</span><span class="runtime">2h 06m</span></div>
+    </div>
+  </div>
+
+  <!-- TIER 1 -->
+  <div class="section">
+    <div class="section-title">Tier 1 — Core Foundation</div>
+    <div class="item" data-min="149">
+      <input type="checkbox">
+      <div class="item-body">
+        <div class="item-title">Avengers: Infinity War</div>
+        <div class="item-desc">The setup half of the Endgame duology.</div>
+      </div>
+      <div class="item-meta"><span class="must">Must</span><span class="runtime">2h 29m</span></div>
+    </div>
+    <div class="item" data-min="300">
+      <input type="checkbox">
+      <div class="item-body">
+        <div class="item-title">Loki — Season 1</div>
+        <div class="item-desc">Introduces the TVA and the sacred timeline concept Season 2 pays off.</div>
+      </div>
+      <div class="item-meta"><span class="optional">Recommended</span><span class="runtime">~5h</span></div>
+    </div>
+    <div class="item" data-min="126">
+      <input type="checkbox">
+      <div class="item-body">
+        <div class="item-title">Doctor Strange in the Multiverse of Madness</div>
+        <div class="item-desc">Establishes key multiverse mechanics you'll want fresh in your head.</div>
+      </div>
+      <div class="item-meta"><span class="must">Must</span><span class="runtime">2h 06m</span></div>
+    </div>
+  </div>
+
+  <!-- TIER 2 -->
+  <div class="section">
+    <div class="section-title">Tier 2 — Fantastic Four Bridge</div>
+    <div class="item" data-min="115">
+      <input type="checkbox">
+      <div class="item-body">
+        <div class="item-title">The Fantastic Four: First Steps</div>
+        <div class="item-desc">Marvel has confirmed this flows directly into Doomsday.</div>
+      </div>
+      <div class="item-meta"><span class="must">Must</span><span class="runtime">1h 55m</span></div>
+    </div>
+  </div>
+
+  <!-- TIER 3 X-MEN -->
+  <div class="section">
+    <div class="section-title">Tier 3 — X-Men Homework</div>
+    <div class="section-note">The original Fox cast is returning for the first time in decades. Worth knowing who they are.</div>
+    <div class="item" data-min="104">
+      <input type="checkbox">
+      <div class="item-body">
+        <div class="item-title">X-Men (2000)</div>
+        <div class="item-desc">Meet Professor X, Magneto, Mystique — the team making their MCU debut.</div>
+      </div>
+      <div class="item-meta"><span class="optional">Optional</span><span class="runtime">1h 44m</span></div>
+    </div>
+    <div class="item" data-min="134">
+      <input type="checkbox">
+      <div class="item-body">
+        <div class="item-title">X2: X-Men United</div>
+        <div class="item-desc">Fan-favorite sequel, deepens the same cast.</div>
+      </div>
+      <div class="item-meta"><span class="optional">Optional</span><span class="runtime">2h 14m</span></div>
+    </div>
+    <div class="item" data-min="128">
+      <input type="checkbox">
+      <div class="item-body">
+        <div class="item-title">Deadpool & Wolverine</div>
+        <div class="item-desc">The bridge film — explains how the Fox universe survives into the MCU.</div>
+      </div>
+      <div class="item-meta"><span class="must">Must</span><span class="runtime">2h 08m</span></div>
+    </div>
+  </div>
+
+  <!-- TIER 4 -->
+  <div class="section">
+    <div class="section-title">Tier 4 — Supporting Threads</div>
+    <div class="section-note">Not required, but these characters are confirmed to appear in Doomsday.</div>
+    <div class="item" data-min="118">
+      <input type="checkbox">
+      <div class="item-body">
+        <div class="item-title">Captain America: Brave New World</div>
+        <div class="item-desc">Sam Wilson's arc as the new Cap is confirmed to matter.</div>
+      </div>
+      <div class="item-meta"><span class="optional">Optional</span><span class="runtime">1h 58m</span></div>
+    </div>
+    <div class="item" data-min="495">
+      <input type="checkbox">
+      <div class="item-body">
+        <div class="item-title">Daredevil: Born Again (S1–S2)</div>
+        <div class="item-desc">Matt Murdock is confirmed for Doomsday; this is his culmination.</div>
+      </div>
+      <div class="item-meta"><span class="optional">Optional</span><span class="runtime">~8h 15m</span></div>
+    </div>
+    <div class="item" data-min="360">
+      <input type="checkbox">
+      <div class="item-body">
+        <div class="item-title">WandaVision</div>
+        <div class="item-desc">Foundational if Scarlet Witch / Vision threads matter to you.</div>
+      </div>
+      <div class="item-meta"><span class="optional">Optional</span><span class="runtime">~6h</span></div>
+    </div>
+    <div class="item" data-min="30">
+      <input type="checkbox">
+      <div class="item-body">
+        <div class="item-title">What If...? — Season 2 Finale</div>
+        <div class="item-desc">A quick multiverse palate cleanser before the main event.</div>
+      </div>
+      <div class="item-meta"><span class="optional">Optional</span><span class="runtime">~30m</span></div>
+    </div>
+    <div class="item" data-min="90">
+      <input type="checkbox">
+      <div class="item-body">
+        <div class="item-title">Ironheart</div>
+        <div class="item-desc">Its finale plants a seed for what comes after Doomsday.</div>
+      </div>
+      <div class="item-meta"><span class="optional">Optional</span><span class="runtime">~1h 30m</span></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Field note: skip anything marked <span class="redact">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> if you're short on time — the Speedrun tier alone will get you through opening night without embarrassment. Runtimes are approximate; check tapped items off as you go and the dossier tallies your progress above.
+  </div>
+</div>
+
+<script>
+  const checkboxes = document.querySelectorAll('.item input[type=checkbox]');
+  const fill = document.getElementById('progressFill');
+  const pctLabel = document.getElementById('progressPct');
+  const timeTotal = document.getElementById('timeTotal');
+
+  let totalMin = 0;
+  document.querySelectorAll('.item').forEach(i => totalMin += parseInt(i.dataset.min || 0));
+  const totalH = Math.floor(totalMin/60), totalM = totalMin%60;
+
+  function fmt(mins){
+    const h = Math.floor(mins/60), m = mins%60;
+    return h + 'h ' + m + 'm';
+  }
+
+  function update(){
+    let watched = 0;
+    let checked = 0;
+    checkboxes.forEach(cb => {
+      const item = cb.closest('.item');
+      if(cb.checked){
+        watched += parseInt(item.dataset.min || 0);
+        checked++;
+        item.classList.add('done');
+      } else {
+        item.classList.remove('done');
+      }
+    });
+    const pct = Math.round((checked/checkboxes.length)*100);
+    fill.style.width = pct + '%';
+    pctLabel.textContent = pct + '%';
+    timeTotal.textContent = fmt(watched) + ' watched of ~' + fmt(totalMin);
+  }
+
+  checkboxes.forEach(cb => cb.addEventListener('change', update));
+  update();
+</script>
+</body>
+</html>
