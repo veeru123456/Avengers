@@ -96,6 +96,16 @@
     letter-spacing:2px;
     opacity:0.85;
   }
+  .agent-bar{
+    display:flex; justify-content:flex-end; align-items:center; gap:12px;
+    font-family:'Courier Prime', monospace; font-size:11px; margin-bottom:10px;
+  }
+  .agent-name{ color:var(--stamp-blue); letter-spacing:1px; text-transform:uppercase; }
+  .agent-logout{
+    background:transparent; border:1px solid var(--line); color:var(--ink-fade);
+    font-family:'Courier Prime', monospace; font-size:11px; padding:3px 10px; cursor:pointer;
+  }
+  .agent-logout:hover{ border-color:var(--stamp-red); color:var(--stamp-red); }
 
   .meta-row{
     display:flex;
@@ -273,6 +283,7 @@
 <body>
 <div class="dossier">
   <div class="clip"></div>
+  <div class="agent-bar" id="agentBar"></div>
 
   <div class="header">
     <div class="case-no">FILE NO. 616-DOOM &nbsp;·&nbsp; CLEARANCE: FAN-LEVEL &nbsp;·&nbsp; SPOILER-FREE</div>
@@ -448,11 +459,25 @@
   </div>
 </div>
 
+<script src="doomsday-auth.js"></script>
 <script>
+  DoomsdayAuth.requireAgent();
+  DoomsdayAuth.renderAgentBadge(document.getElementById('agentBar'));
+
+  const PAGE_KEY = 'speedrun';
   const checkboxes = document.querySelectorAll('.item input[type=checkbox]');
   const fill = document.getElementById('progressFill');
   const pctLabel = document.getElementById('progressPct');
   const timeTotal = document.getElementById('timeTotal');
+
+  // Give every checkbox a stable id so progress can be saved per-item
+  checkboxes.forEach((cb, i) => cb.dataset.id = 'item-' + i);
+
+  // Restore saved progress for this agent
+  const saved = DoomsdayAuth.loadProgress(PAGE_KEY);
+  checkboxes.forEach(cb => {
+    if (saved[cb.dataset.id]) cb.checked = true;
+  });
 
   let totalMin = 0;
   document.querySelectorAll('.item').forEach(i => totalMin += parseInt(i.dataset.min || 0));
@@ -482,7 +507,10 @@
     timeTotal.textContent = fmt(watched) + ' watched of ~' + fmt(totalMin);
   }
 
-  checkboxes.forEach(cb => cb.addEventListener('change', update));
+  checkboxes.forEach(cb => cb.addEventListener('change', () => {
+    DoomsdayAuth.saveProgress(PAGE_KEY, cb.dataset.id, cb.checked);
+    update();
+  }));
   update();
 </script>
 </body>

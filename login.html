@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>OPERATION: DOOMSDAY — Access Terminal</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap');
+  :root{
+    --bg:#0A0D12; --panel:#11151D; --line:#232B39; --text:#E7E6DD; --text-dim:#77839A;
+    --gold:#D9A441; --red:#C4453B;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{ height:100%; background:var(--bg); color:var(--text); font-family:'Rajdhani',sans-serif; }
+  body{
+    display:flex; align-items:center; justify-content:center; padding:24px;
+    background-image:
+      linear-gradient(rgba(217,164,65,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(217,164,65,0.035) 1px, transparent 1px);
+    background-size:34px 34px;
+  }
+  .sweep{
+    position:fixed; top:0; left:0; width:100%; height:6px;
+    background:linear-gradient(90deg, transparent, var(--gold), transparent);
+    box-shadow:0 0 24px 4px rgba(217,164,65,0.6); z-index:50;
+    animation: sweepDown 1.6s ease-out forwards;
+  }
+  @keyframes sweepDown{ 0%{top:0;opacity:1;} 90%{opacity:1;} 100%{top:100%;opacity:0;} }
+
+  .terminal{
+    width:100%; max-width:420px; background:var(--panel); border:1px solid var(--line);
+    padding:40px 36px; position:relative; opacity:0; transform:translateY(16px);
+    animation: riseIn .5s ease forwards .2s;
+  }
+  @keyframes riseIn{ to{ opacity:1; transform:translateY(0); } }
+
+  .eyebrow{
+    font-family:'Orbitron',sans-serif; font-size:11px; letter-spacing:4px; color:var(--red);
+    text-transform:uppercase; display:flex; align-items:center; gap:10px; margin-bottom:16px;
+  }
+  .eyebrow::before{
+    content:''; width:8px; height:8px; background:var(--red); border-radius:50%;
+    box-shadow:0 0 8px 2px var(--red); animation: blink 1.4s infinite;
+  }
+  @keyframes blink{ 0%,100%{opacity:1;} 50%{opacity:0.25;} }
+
+  h1{ font-family:'Orbitron',sans-serif; font-size:26px; letter-spacing:1px; margin-bottom:10px; }
+  h1 span{ color:var(--gold); }
+  p.desc{ font-size:14px; color:var(--text-dim); line-height:1.55; margin-bottom:26px; }
+
+  label{
+    display:block; font-family:'Orbitron',sans-serif; font-size:10.5px; letter-spacing:2px;
+    text-transform:uppercase; color:var(--text-dim); margin-bottom:8px;
+  }
+  input[type=text]{
+    width:100%; background:#0D1119; border:1px solid var(--line); color:var(--text);
+    font-family:'Rajdhani',sans-serif; font-size:16px; padding:12px 14px; margin-bottom:20px;
+    outline:none; transition:border-color .15s ease;
+  }
+  input[type=text]:focus{ border-color:var(--gold); }
+
+  button{
+    width:100%; background:var(--gold); border:none; color:#15110A; cursor:pointer;
+    font-family:'Orbitron',sans-serif; font-size:13px; letter-spacing:2px; text-transform:uppercase;
+    padding:14px; transition:opacity .15s ease;
+  }
+  button:hover{ opacity:0.88; }
+
+  .note{
+    margin-top:20px; font-size:11.5px; color:var(--text-dim); line-height:1.5;
+    border-top:1px solid var(--line); padding-top:16px;
+  }
+  .note b{ color:var(--gold); }
+
+  .error{ font-size:12.5px; color:var(--red); margin:-10px 0 16px; display:none; }
+</style>
+</head>
+<body>
+<div class="sweep"></div>
+
+<div class="terminal">
+  <div class="eyebrow">Clearance Required</div>
+  <h1>ACCESS <span>TERMINAL</span></h1>
+  <p class="desc">Enter a callsign to open your case file. Your checklist progress will be saved under this name, in this browser, so it's here next time you come back.</p>
+
+  <form id="loginForm">
+    <label for="callsign">Callsign</label>
+    <input type="text" id="callsign" placeholder="e.g. veeru123456" maxlength="24" autocomplete="off">
+    <div class="error" id="errorMsg">Enter a callsign to continue.</div>
+    <button type="submit">Authenticate →</button>
+  </form>
+
+  <div class="note"><b>Field note:</b> this isn't real account security — there's no password and no server. It just tags your saved progress with a name so multiple people can use the same browser without overwriting each other's checklists.</div>
+</div>
+
+<script src="doomsday-auth.js"></script>
+<script>
+  // If already logged in, skip straight through
+  if (DoomsdayAuth.getAgent()) {
+    window.location.href = "index.html";
+  }
+
+  const form = document.getElementById('loginForm');
+  const input = document.getElementById('callsign');
+  const error = document.getElementById('errorMsg');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const name = input.value.trim();
+    if (!name) {
+      error.style.display = 'block';
+      return;
+    }
+    DoomsdayAuth.setAgent(name);
+    window.location.href = "index.html";
+  });
+</script>
+</body>
+</html>

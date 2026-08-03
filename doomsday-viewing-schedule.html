@@ -26,6 +26,16 @@
     font-size:14px; letter-spacing:2px; opacity:0.85; }
   .meta-row{ display:flex; gap:22px; font-size:12px; color:var(--ink-fade); flex-wrap:wrap; }
   .meta-row b{ color:var(--ink); }
+  .agent-bar{
+    display:flex; justify-content:flex-end; align-items:center; gap:12px;
+    font-family:'Courier Prime', monospace; font-size:11px; margin-bottom:10px;
+  }
+  .agent-name{ color:var(--stamp-blue); letter-spacing:1px; text-transform:uppercase; }
+  .agent-logout{
+    background:transparent; border:1px solid var(--line); color:var(--ink-fade);
+    font-family:'Courier Prime', monospace; font-size:11px; padding:3px 10px; cursor:pointer;
+  }
+  .agent-logout:hover{ border-color:var(--stamp-red); color:var(--stamp-red); }
 
   .banner{ margin:16px 40px 0; padding:10px 14px; border:1px solid var(--stamp-blue); background:#dfe6ee55;
     font-size:12px; color:var(--ink); }
@@ -65,6 +75,7 @@
 <body>
 <div class="dossier">
   <div class="clip"></div>
+  <div class="agent-bar" id="agentBar"></div>
 
   <div class="header">
     <div class="case-no">FILE NO. 616-DOOM-SCHED &nbsp;·&nbsp; DEPLOYMENT SCHEDULE &nbsp;·&nbsp; SPOILER-FREE</div>
@@ -133,5 +144,10 @@
     Field note: this plan assumes roughly 7–9 hrs/weekend, which is generous but realistic for two free days. Phases One through Five are the non-negotiable core — Phase Six and the buffer weekends have slack built in on purpose, since TV seasons run long and life happens. If you fall behind, borrow from the buffer weekends before you borrow from sleep.
   </div>
 </div>
+<script src="doomsday-auth.js"></script>
+<script>
+  DoomsdayAuth.requireAgent();
+  DoomsdayAuth.renderAgentBadge(document.getElementById('agentBar'));
+</script>
 </body>
 </html>

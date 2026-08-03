@@ -43,6 +43,16 @@
     font-family:'Special Elite', monospace; text-transform:uppercase; padding:6px 12px;
     transform:rotate(8deg); font-size:14px; letter-spacing:2px; opacity:0.85;
   }
+  .agent-bar{
+    display:flex; justify-content:flex-end; align-items:center; gap:12px;
+    font-family:'Courier Prime', monospace; font-size:11px; margin-bottom:10px;
+  }
+  .agent-name{ color:var(--stamp-blue); letter-spacing:1px; text-transform:uppercase; }
+  .agent-logout{
+    background:transparent; border:1px solid var(--line); color:var(--ink-fade);
+    font-family:'Courier Prime', monospace; font-size:11px; padding:3px 10px; cursor:pointer;
+  }
+  .agent-logout:hover{ border-color:var(--stamp-red); color:var(--stamp-red); }
   .meta-row{ display:flex; gap:22px; font-size:12px; color:var(--ink-fade); flex-wrap:wrap; }
   .meta-row b{ color:var(--ink); }
 
@@ -98,6 +108,7 @@
 <body>
 <div class="dossier">
   <div class="clip"></div>
+  <div class="agent-bar" id="agentBar"></div>
 
   <div class="header">
     <div class="case-no">FILE NO. 616-DOOM-FULL &nbsp;·&nbsp; COMPLETE CASE FILE &nbsp;·&nbsp; SPOILER-FREE</div>
@@ -224,13 +235,25 @@
   </div>
 </div>
 
+<script src="doomsday-auth.js"></script>
 <script>
+  DoomsdayAuth.requireAgent();
+  DoomsdayAuth.renderAgentBadge(document.getElementById('agentBar'));
+
+  const PAGE_KEY = 'full-order';
   const checkboxes = document.querySelectorAll('.item input[type=checkbox]');
   const fill = document.getElementById('progressFill');
   const pctLabel = document.getElementById('progressPct');
   const progressCount = document.getElementById('progressCount');
   const totalCount = document.getElementById('totalCount');
   totalCount.textContent = checkboxes.length;
+
+  checkboxes.forEach((cb, i) => cb.dataset.id = 'item-' + i);
+
+  const saved = DoomsdayAuth.loadProgress(PAGE_KEY);
+  checkboxes.forEach(cb => {
+    if (saved[cb.dataset.id]) cb.checked = true;
+  });
 
   function update(){
     let checked = 0;
@@ -244,7 +267,10 @@
     pctLabel.textContent = pct + '%';
     progressCount.textContent = checked + ' of ' + checkboxes.length + ' watched';
   }
-  checkboxes.forEach(cb => cb.addEventListener('change', update));
+  checkboxes.forEach(cb => cb.addEventListener('change', () => {
+    DoomsdayAuth.saveProgress(PAGE_KEY, cb.dataset.id, cb.checked);
+    update();
+  }));
   update();
 </script>
 </body>
